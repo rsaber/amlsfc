@@ -160,7 +160,7 @@ void createDefaultView(WINDOW * win){
 	mvwprintw(win,t++,53,"%s", "q - quit");
 	//mvwprintw(win,t++,53,"%s", "w - credits");
 
-	mvwprintw(win,WINDOW_SIZE_HEIGHT-1,68,"%s", "[UNSW]");
+	mvwprintw(win,WINDOW_SIZE_HEIGHT-1,68,"%s", "[rsaber]");
 }
 
 void updateView(WINDOW * win){

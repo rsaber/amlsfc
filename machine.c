@@ -52,7 +52,10 @@ char * getName(Machine m){
 }
 
 void resetMachine(Machine m){
-	memset(m->reg, 0, sizeof(int)*REG_SIZE);
+	int i;
+	for(i=0; i<REG_SIZE; i++){
+		m->reg[i] = 0;
+	}
 	m->pc = 0;
 	m->status = NORMAL;
 }
