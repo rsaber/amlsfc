@@ -37,7 +37,8 @@ typedef struct{
 } Instruction;
 
 typedef struct _machine{
-    char *name;
+    char *programName;
+    char *filepath;
     uc mem[MEM_SIZE];
     uc reg[REG_SIZE];
     uc pc;
@@ -63,10 +64,11 @@ typedef struct{
 
 Machine newMachine();
 void destroyMachine(Machine m);
-void renameMachine(Machine m, char * name);
 
 void saveMachine(Machine m);
 void loadMachine(Machine m, char * filename);
+
+char * extractNameFromPath(char * path);
 
 uc readMemoryAt(Machine m, uc loc);
 uc readRegistersAt(Machine m, uc loc);

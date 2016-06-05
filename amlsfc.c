@@ -38,9 +38,7 @@ int main(int argc, char * argv[]){
 
 	m = newMachine();
 	if(argc == 2){
-		// if load machine fails, then we are creating a new file with name argv[1]
 		loadMachine(m,argv[1]);
-		renameMachine(m,argv[1]);
 	}
 
 	win = newwin(WINDOW_SIZE_HEIGHT,WINDOW_SIZE_WIDTH,2,2);

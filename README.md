@@ -14,7 +14,7 @@ Run with:
 ## Instructions
 ### Commands
 * [enter] - edit a memory cell, use [enter] again to save changes
-* [tab] - toggle between the 3 sections, memory, registers and PC
+* [tab] - toggle between the 3 sections: memory, registers and PC
 * c - clear registers and PC
 * r - run program until HALT or 500 program cycles
 * n - step through a single 4 byte command

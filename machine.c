@@ -9,6 +9,17 @@
 
 #include "machine.h"
 
+// eg: examples/hello.a
+// will return a pointer to h
+// func will break if final char is a /
+char * extractNameFromPath(char * path){
+	int i, head=0;
+	for(i=0; path[i]!='\0'; i++){
+		if(path[i] == '/') head = i+1;
+	}
+	return path+head;
+}
+
 // --ADT HELPERS------------------------------
 uc readMemoryAt(Machine m, uc loc){
 	return m->mem[loc];
@@ -48,7 +59,7 @@ void writePC(Machine m, uc value){
 }
 
 char * getName(Machine m){
-	return m->name;
+	return m->programName;
 }
 
 void resetMachine(Machine m){
@@ -60,14 +71,14 @@ void resetMachine(Machine m){
 	m->status = NORMAL;
 }
 
-// ---------------------------------------------
-
 Machine newMachine(){
 	Machine m = malloc(sizeof(struct _machine));
-	m->name = strdup("untitled.a");
+	m->programName = strdup("untitled.a");
+	m->filepath = strdup("untitled.a");
 
-	memset(m->mem, 0, sizeof(int)*MEM_SIZE);
-	memset(m->reg, 0, sizeof(int)*REG_SIZE);
+	int i;
+	for(i=0; i<MEM_SIZE; i++) m->mem[i] = 0;
+	for(i=0; i<REG_SIZE; i++) m->reg[i] = 0;
 
 	m->pc = 0;
 	m->ir.opcode = 0;
@@ -80,37 +91,41 @@ Machine newMachine(){
 }
 
 void saveMachine(Machine m){
-	FILE *fp = fopen(m->name,"w");
+	FILE *fp = fopen(m->filepath,"w");
 	if(fp==NULL) return;
 	int i;
-	fprintf(fp,"%s\n",m->name);
 	for(i=0; i<MEM_SIZE; i++){
-			fprintf(fp,"%d ",m->mem[i]);
+		fprintf(fp,"%d ",m->mem[i]);
 	}
 	fclose(fp);
 }
 
 void loadMachine(Machine m, char * filename){
 	FILE *fp = fopen(filename,"r");
+
+	char * progname = extractNameFromPath(filename);
+	free(m->programName);
+	free(m->filepath);
+	m->programName = strdup(progname);
+	m->filepath = strdup(filename);
+
 	if(fp==NULL) return;
+
 	int i,temp;
-	fgets(m->name, 128, fp);
 	for(i=0; i<MEM_SIZE; i++){
-			fscanf(fp, "%d", &temp);
-			m->mem[i] = temp;
+		fscanf(fp, "%d", &temp);
+		m->mem[i] = temp;
 	}
 	fclose(fp);
 }
 
 void destroyMachine(Machine m){
-	free(m->name);
+	free(m->programName);
+	free(m->filepath);
 	free(m);
 }
 
-void renameMachine(Machine m, char * name){
-	free(m->name);
-	m->name = strdup(name);
-}
+// ---------------------------------------------
 
 void run(Machine m){
 	int i = 0;
@@ -136,12 +151,11 @@ void step(Machine m){
 	execute(m);
 }
 
-
 void execute(Machine m){
-	int opcode  = m->ir.opcode;
-	int r       = m->ir.r;
-	int x       = m->ir.x;
-	int y       = m->ir.y;
+	int opcode = m->ir.opcode;
+	int r = m->ir.r;
+	int x = m->ir.x;
+	int y = m->ir.y;
 	
 	switch (opcode){
 		case LOADMEM:
@@ -187,8 +201,6 @@ void execute(Machine m){
 }
 
 // FLOATING POINT ARITHMETIC
-
-// fix!
 uc addFloats(Floating a, Floating b){
 	// NOT DONE!
 
