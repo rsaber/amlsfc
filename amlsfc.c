@@ -1,3 +1,9 @@
+/*
+	* amlsfc
+	* a machine language simulator for comp1917
+	* Written by Riyasat Saber (c) 2016
+*/
+
 #include <stdio.h>
 #include <ncurses.h>
 #include "machine.h"
@@ -140,7 +146,7 @@ void createDefaultView(WINDOW * win){
 	int t = 3;
 	
 	mvwprintw(win,0,START_X,"[amlsfc]");
-	mvwprintw(win,0,START_X+9,"[%s]",getName(m));
+	mvwprintw(win,0,START_X+9,"[%.32s]",getName(m));
 	mvwprintw(win,t++,53,"%s", "a machine language");
 	mvwprintw(win,t++,53,"%s", "simulator for COMP1917");
 	t++;
@@ -154,7 +160,7 @@ void createDefaultView(WINDOW * win){
 	mvwprintw(win,t++,53,"%s", "q - quit");
 	//mvwprintw(win,t++,53,"%s", "w - credits");
 
-	mvwprintw(win,WINDOW_SIZE_HEIGHT-1,50,"%s", "[written by Riyasat Saber]");
+	mvwprintw(win,WINDOW_SIZE_HEIGHT-1,68,"%s", "[UNSW]");
 }
 
 void updateView(WINDOW * win){
@@ -243,4 +249,3 @@ void updateView(WINDOW * win){
 	}
 	wrefresh(win);
 }
-

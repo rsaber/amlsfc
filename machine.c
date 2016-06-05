@@ -1,3 +1,8 @@
+/*
+	* machine ADT for amlsfc
+	* Written by Riyasat Saber (c) 2016
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -86,7 +91,7 @@ void loadMachine(Machine m, char * filename){
 	FILE *fp = fopen(filename,"r");
 	if(fp==NULL) return;
 	int i,temp;
-	fgets(m->name, 16, fp);
+	fgets(m->name, 128, fp);
 	for(i=0; i<MEM_SIZE; i++){
 			fscanf(fp, "%d", &temp);
 			m->mem[i] = temp;
@@ -152,7 +157,7 @@ void execute(Machine m){
 			m->reg[r] = m->reg[x] + m->reg[y];
 			break;
 		case ADDFLOAT:
-			m->reg[r] = addFloats(m->reg[x], m->reg[y]);
+			m->reg[r] = addFloats(UCToFloat(m->reg[x]), UCToFloat(m->reg[y]));
 			break;
 		case OR:
 			m->reg[r] = m->reg[x] | m->reg[y];
@@ -181,17 +186,15 @@ void execute(Machine m){
 // FLOATING POINT ARITHMETIC
 
 // fix!
-uc addFloats(uc a, uc b){
-	Floating x,y;
-	x = decodeFloat(a);
-	y = decodeFloat(b);
+uc addFloats(Floating a, Floating b){
+	// NOT DONE!
 
 	return 1;
 }
 
 // NO CHECKS DONE FOR OVERFLOWS!
 // or rounding
-Floating decodeFloat(uc x){
+Floating UCToFloat(uc x){
 	Floating f;
 	// any overflows will be cut off, because we used bitfields
 	f.s = x >> 7;
@@ -200,7 +203,6 @@ Floating decodeFloat(uc x){
 	return f;
 }
 
-uc encodeFloat(Floating f){
+uc floatToUC(Floating f){
 	return (f.s << 7) | (f.e << 4) | f.m;
 }
-

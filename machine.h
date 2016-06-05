@@ -1,3 +1,9 @@
+/*
+    * machine ADT for amlsfc
+    * header file
+    * Written by Riyasat Saber (c) 2016
+*/
+
 #define MEM_SIZE 256
 #define REG_SIZE 16
 
@@ -59,6 +65,9 @@ Machine newMachine();
 void destroyMachine(Machine m);
 void renameMachine(Machine m, char * name);
 
+void saveMachine(Machine m);
+void loadMachine(Machine m, char * filename);
+
 uc readMemoryAt(Machine m, uc loc);
 uc readRegistersAt(Machine m, uc loc);
 uc readPC(Machine m);
@@ -76,12 +85,6 @@ void step(Machine m);
 void decodeInstruction(Machine m);
 void execute(Machine m);
 
-uc addFloats(uc a, uc b);
-Floating decodeFloat(uc x);
-uc encodeFloat(Floating f);
-
-void saveMachine(Machine m);
-void loadMachine(Machine m, char * filename);
-
-
-
+uc addFloats(Floating a, Floating b);
+Floating UCToFloat(uc x);
+uc floatToUC(Floating f);
