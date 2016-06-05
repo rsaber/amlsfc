@@ -32,6 +32,7 @@ int main(int argc, char * argv[]){
 
 	m = newMachine();
 	if(argc == 2){
+		// if load machine fails, then we are creating a new file with name argv[1]
 		loadMachine(m,argv[1]);
 		renameMachine(m,argv[1]);
 	}
@@ -79,6 +80,8 @@ int main(int argc, char * argv[]){
 					else highlight[section]++;
 				}
 				break;
+
+			// tab key
 			case 9:
 				// toggle section
 				section++;
@@ -96,8 +99,9 @@ int main(int argc, char * argv[]){
 			case 'c':
 				resetMachine(m);
 				break;
+
+			// enter key
 			case 10:
-				// pressed enter
 				read = readInput(win);
 				if(section == SECTION_MEMORY) writeMemoryAt(m, highlight[section], read);
 				else if(section == SECTION_REGISTERS) writeRegistersAt(m, highlight[section], read);
@@ -133,14 +137,12 @@ unsigned char readInput(WINDOW *win){
 void createDefaultView(WINDOW * win){
 	box(win, 0, 0);
 	// RIYO AUTHORSHIP
-	int t = 2;
+	int t = 3;
 	
 	mvwprintw(win,0,START_X,"[amlsfc]");
 	mvwprintw(win,0,START_X+9,"[%s]",getName(m));
-	t++;
 	mvwprintw(win,t++,53,"%s", "a machine language");
 	mvwprintw(win,t++,53,"%s", "simulator for COMP1917");
-	mvwprintw(win,WINDOW_SIZE_HEIGHT-1,50,"%s", "[written by Riyasat Saber]");
 	t++;
 	mvwprintw(win,t++,53,"%s", "commands:");
 	mvwprintw(win,t++,53,"%s", "[enter] - edit cell");
@@ -150,8 +152,9 @@ void createDefaultView(WINDOW * win){
 	mvwprintw(win,t++,53,"%s", "n - step");
 	mvwprintw(win,t++,53,"%s", "s - save file");
 	mvwprintw(win,t++,53,"%s", "q - quit");
-	t+=2;
 	//mvwprintw(win,t++,53,"%s", "w - credits");
+
+	mvwprintw(win,WINDOW_SIZE_HEIGHT-1,50,"%s", "[written by Riyasat Saber]");
 }
 
 void updateView(WINDOW * win){

@@ -86,7 +86,7 @@ void loadMachine(Machine m, char * filename){
 	FILE *fp = fopen(filename,"r");
 	if(fp==NULL) return;
 	int i,temp;
-	fgets(m->name, 32, fp);
+	fgets(m->name, 16, fp);
 	for(i=0; i<MEM_SIZE; i++){
 			fscanf(fp, "%d", &temp);
 			m->mem[i] = temp;
